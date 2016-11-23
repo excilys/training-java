@@ -14,6 +14,8 @@ Here is the macro-planning and timeline of all milestones:
  * t0+23 - Spring MVC integration, JDBC Template, i18n
  * t0+29 - Maven Multi-modules, Spring Security, Hibernate ORM (JPA, Criteria, QueryDSL, Spring Data JPA)
  * t0+31 - Web Services, end of project
+ * t0+33 - Introduction to the most used Android Libraries
+ * t0+36 - Dependencies Injection and Tests on Android
  * t0+34 - Project presentation to sales & tech audience
 
 #Installation
@@ -222,16 +224,53 @@ To allow the creation of AngularJS, Mobile (Android/iOS) or third party clients,
 ####4.7.3. Jax WS / Jax RS
 Refactor your CLI client to act as a remote client to your webapp, using either Jax-RS or Jax-WS libraries.
 
-####4.7.4. Final Code Review (t0 + 31 days)
+####4.7.4. Code Review (t0 + 31 days)
 Steps to fix before final release, code quality overview and possible improvements. Point about UX
 
-###4.8. Final refactoring, UX, and project presentation
-The final stage is your production release.  
+###4.8 Android Introduction
 
-####4.8.1. UX
-This is where you will think UX first, challenge the technical choices of the base page template, and customize it to your standards.
+It's time to use your RESTful webapp. You'll create an Android Client App.
+We assume here you have Android's basics. Also, your REST webapp must have a minimal security (otherwise, add a basic authentication).
 
-###4.8.2. Final Presentation (t0 + 34 days)
+Of course, you will use Android's latest version.
+
+This part's goal is to use the most known libraries in the Android world.
+
+####4.8.1. The most used libs
+
+You will implement at least :
+ * a login view
+ * a list view of computers
+ * an adding/editing computer view
+
+Add validation data only if you have finished the main features of this sprint.
+
+Compulsory Components : Architecture with Services, etc..., RecyclerView, Fragments, Retrofit to call your REST Api, RxJava (in addition to Retrofit) to make better asynchronous calls, ButterKnife to inject views or others elements from Android XML resources and the "Application Singleton scope for Android"
+
+Bonus features : Responsive design (smartphone and tablet), stylish components (Navigation Drawer, FAB button, infinite scroll, search bar, ...), APK file analyse, make somes animations, respect of Google Material Design.
+
+####4.8.2. Code Review (t0 + 34 days)
+
+Important Points : How does libraries work, Android Support Library (AppCompatActivity, Fragment from android support, ...), Architecture : Fragments, Services, Api, Helper, Manager, ..., Application Singleton scope, Retrofit : interceptors, resources usage, Android's bests practices, Shared Preferences (Helper).
+
+####4.8.3. Dependency Injections
+
+Add Dagger to your project in order to inject objects like service, etc... into your activities and fragments.
+
+####4.8.4. Instrumented tests
+
+You will also make instrumented tests on Android. Use the Android Espresso Library to make easier and more friendly instrumented tests ([refer to this doc](https://google.github.io/android-testing-support-library/docs/espresso/index.html)).
+
+Bonus features : with Dagger and Mockito, test some use cases like "internet is broken", or others use cases hard to set up physically and automatically.
+
+####4.8.5. Code Review (t0 + 36 days)
+
+Important points : Organisations of Modules and Components (Dagger), conventions' respect, components' placement, Scope in Dagger, Espresso Library, IdlingResource (Test Espresso), onView vs onData, non instrumented tests in Android ?
+
+###4.9. Final refactoring and project presentation
+The final stage is your production release.
+
+###4.9.1. Final Presentation (t0 + 34 days)
 The presentation will be made with the whole group, on one project of their choice.  
 It consists of 3 parts:  
 The product-presentation, from a user-centered perspective (non-technical). 
