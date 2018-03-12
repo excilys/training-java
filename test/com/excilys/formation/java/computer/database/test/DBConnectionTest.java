@@ -15,7 +15,7 @@ public class DBConnectionTest {
 
 	@Test
 	public void test() throws ClassNotFoundException, SQLException, IOException {
-		Connection conn = DBConnection.getConnection();
+		Connection conn = DBConnection.INSTANCE.getConnection();
 		assertNotNull(conn);
 	}
 

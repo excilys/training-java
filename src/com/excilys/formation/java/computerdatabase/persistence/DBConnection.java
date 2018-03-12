@@ -17,15 +17,15 @@ import java.util.Properties;
  * @author excilys
  *
  */
-public class DBConnection {
+public enum DBConnection {
+	
+	INSTANCE;
 
 	/**
 	 * 
 	 */
 
-
-	private Connection conn = null;
-	private static DBConnection instance;
+	private  Connection conn;
 	private static final String PROPERTIES_FILE = "WebContent/WEB-INF/dao.properties";
 	private static final String PROPERTY_URL = "url";
 	private static final String PROPERTY_DRIVER = "driver";
@@ -33,7 +33,9 @@ public class DBConnection {
 	private static final String PROPERTY_PASSWORD = "password";		
 
 
-	private DBConnection()  throws ClassNotFoundException, SQLException, IOException {
+	
+
+	public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
 		String url;
 		String driver;
 		String utilisateur;
@@ -51,17 +53,8 @@ public class DBConnection {
 
 		Class.forName( driver );
 		conn = DriverManager.getConnection(url, utilisateur, password);
-		if (conn != null) {
-			conn.close();
-		}
-
-	}
-
-	public static Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
-		if (instance == null) {
-			instance = new DBConnection();
-		}
-		return instance.conn;
+		
+		return conn;
 	}
 	
 	public static void closeConnection(ResultSet rs, Statement stat, Connection conn) throws SQLException {

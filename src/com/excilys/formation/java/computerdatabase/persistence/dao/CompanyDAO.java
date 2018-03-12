@@ -41,7 +41,7 @@ public class CompanyDAO implements ICompanyDAO {
 		Statement stat = null;
 		ResultSet rs = null;
 		try {
-			conn = DBConnection.getConnection();
+			conn = DBConnection.INSTANCE.getConnection();
 			stat= conn.createStatement();
 			rs = stat.executeQuery(SQL_LIST_COMPANIES);
 			
