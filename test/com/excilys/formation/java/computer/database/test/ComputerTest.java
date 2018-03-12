@@ -1,14 +1,13 @@
 /**
  * 
  */
-package com.excilys.formation.java.computer.database.test.model;
+package com.excilys.formation.java.computer.database.test;
 
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.excilys.formation.java.computerdatabase.model.Computer;

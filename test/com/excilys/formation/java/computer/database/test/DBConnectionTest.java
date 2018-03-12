@@ -1,4 +1,4 @@
-package com.excilys.formation.java.computer.database.test.model;
+package com.excilys.formation.java.computer.database.test;
 
 import static org.junit.Assert.*;
 

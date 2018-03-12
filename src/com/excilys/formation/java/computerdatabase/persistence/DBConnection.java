@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -60,5 +62,17 @@ public class DBConnection {
 			instance = new DBConnection();
 		}
 		return instance.conn;
+	}
+	
+	public static void closeConnection(ResultSet rs, Statement stat, Connection conn) throws SQLException {
+		if(rs != null) {
+			rs.close();
+		}
+		if(stat != null) {
+			stat.close();
+		}
+		if(conn != null) {
+			conn.close();
+		}
 	}
 }
