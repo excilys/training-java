@@ -6,3 +6,4 @@
 # Maven
 log/
 target/
+/build/
