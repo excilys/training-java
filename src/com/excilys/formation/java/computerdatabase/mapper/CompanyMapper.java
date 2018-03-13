@@ -13,13 +13,12 @@ import com.excilys.formation.java.computerdatabase.model.Company;
  *
  */
 public enum CompanyMapper {
-	
+
 	INSTANCE;
 
 	/**
 	 * 
 	 */
-	
 
 	public static Company createCompany(ResultSet rs) throws SQLException {
 		Long id = rs.getLong("id");

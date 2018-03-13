@@ -18,22 +18,19 @@ import java.util.Properties;
  *
  */
 public enum DBConnection {
-	
+
 	INSTANCE;
 
 	/**
 	 * 
 	 */
 
-	private  Connection conn;
+	private Connection conn;
 	private static final String PROPERTIES_FILE = "WebContent/WEB-INF/dao.properties";
 	private static final String PROPERTY_URL = "url";
 	private static final String PROPERTY_DRIVER = "driver";
 	private static final String PROPERTY_NOM_UTILISATEUR = "utilisateur";
-	private static final String PROPERTY_PASSWORD = "password";		
-
-
-	
+	private static final String PROPERTY_PASSWORD = "password";
 
 	public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
 		String url;
@@ -50,21 +47,20 @@ public enum DBConnection {
 		utilisateur = properties.getProperty(PROPERTY_NOM_UTILISATEUR);
 		password = properties.getProperty(PROPERTY_PASSWORD);
 
-
-		Class.forName( driver );
+		Class.forName(driver);
 		conn = DriverManager.getConnection(url, utilisateur, password);
-		
+
 		return conn;
 	}
-	
+
 	public static void closeConnection(ResultSet rs, Statement stat, Connection conn) throws SQLException {
-		if(rs != null) {
+		if (rs != null) {
 			rs.close();
 		}
-		if(stat != null) {
+		if (stat != null) {
 			stat.close();
 		}
-		if(conn != null) {
+		if (conn != null) {
 			conn.close();
 		}
 	}

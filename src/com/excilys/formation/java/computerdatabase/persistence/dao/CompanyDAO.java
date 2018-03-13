@@ -5,6 +5,7 @@ package com.excilys.formation.java.computerdatabase.persistence.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,35 +21,34 @@ import com.excilys.formation.java.computerdatabase.persistence.DBConnection;
  *
  */
 public enum CompanyDAO implements ICompanyDAO {
-	
+
 	INSTANCE;
 
 	/**
 	 * 
 	 */
-	
-	private static final String SQL_LIST_COMPANIES = "SELECT * FROM company";
-	
-	
 
-	/* (non-Javadoc)
-	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.ICompanyDAO#listCompanies()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.ICompanyDAO#
+	 * listCompanies()
 	 */
 	@Override
 	public List<Company> getListCompanies() {
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
 		Connection conn = null;
-		Statement stat = null;
+		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
 			conn = DBConnection.INSTANCE.getConnection();
-			stat= conn.createStatement();
-			rs = stat.executeQuery(SQL_LIST_COMPANIES);
-			
-			while(rs.next()) {
+			stat = conn.prepareStatement("SELECT * FROM company");
+			rs = stat.executeQuery();
+
+			while (rs.next()) {
 				listCompanies.add(CompanyMapper.createCompany(rs));
 			}
-			
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

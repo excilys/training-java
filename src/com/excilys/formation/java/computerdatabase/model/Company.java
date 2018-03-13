@@ -12,23 +12,19 @@ public class Company {
 	/**
 	 * 
 	 */
-	
+
 	private Long id;
 	private String name;
-	
+
 	public Company() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 
 	public Company(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
-
-
 
 	/**
 	 * @return the id
@@ -38,7 +34,8 @@ public class Company {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -52,12 +49,11 @@ public class Company {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 
 }

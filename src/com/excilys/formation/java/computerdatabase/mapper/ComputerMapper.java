@@ -13,16 +13,21 @@ import com.excilys.formation.java.computerdatabase.model.Computer;
  *
  */
 public enum ComputerMapper {
-	
+
 	INSTANCE;
 
 	/**
+	 * @throws SQLException
 	 * 
 	 */
-	
 
-	public static Computer createComputer(ResultSet rs) throws SQLException {
+	public Computer createComputer(ResultSet rs) throws SQLException {
 		Computer c = new Computer();
+		fillFieldsForComputer(rs, c);
+		return c;
+	}
+
+	public Computer fillFieldsForComputer(ResultSet rs, Computer c) throws SQLException {
 		c.setName(rs.getString(0));
 		c.setIntroduced(rs.getDate(1).toLocalDate());
 		c.setDiscontinued(rs.getDate(2).toLocalDate());

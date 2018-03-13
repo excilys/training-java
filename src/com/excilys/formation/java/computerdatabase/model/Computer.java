@@ -14,19 +14,17 @@ public class Computer {
 	/**
 	 * 
 	 */
-	
+
 	private Long id;
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
 	private Long company_id;
-	
-	
+
 	public Computer() {
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	public Computer(Long id, String name, LocalDate introduced, LocalDate discontinued, Long company_id) {
 		super();
 		this.id = id;
@@ -36,7 +34,6 @@ public class Computer {
 		this.company_id = company_id;
 	}
 
-
 	/**
 	 * @return the id
 	 */
@@ -44,14 +41,13 @@ public class Computer {
 		return id;
 	}
 
-
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	/**
 	 * @return the name
@@ -60,14 +56,13 @@ public class Computer {
 		return name;
 	}
 
-
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	/**
 	 * @return the introduced
@@ -76,14 +71,13 @@ public class Computer {
 		return introduced;
 	}
 
-
 	/**
-	 * @param introduced the introduced to set
+	 * @param introduced
+	 *            the introduced to set
 	 */
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
-
 
 	/**
 	 * @return the discontinued
@@ -92,14 +86,13 @@ public class Computer {
 		return discontinued;
 	}
 
-
 	/**
-	 * @param discontinued the discontinued to set
+	 * @param discontinued
+	 *            the discontinued to set
 	 */
 	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
-
 
 	/**
 	 * @return the company_id
@@ -108,14 +101,12 @@ public class Computer {
 		return company_id;
 	}
 
-
 	/**
-	 * @param company_id the company_id to set
+	 * @param company_id
+	 *            the company_id to set
 	 */
 	public void setCompany_id(Long company_id) {
 		this.company_id = company_id;
 	}
-	
-	
 
 }

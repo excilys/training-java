@@ -21,15 +21,19 @@ import com.excilys.formation.java.computerdatabase.persistence.DBConnection;
  *
  */
 public enum ComputerDAO implements IComputerDAO {
-	
+
 	INSTANCE;
 
 	/**
 	 * 
 	 */
 
-	/* (non-Javadoc)
-	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#createComputer(com.excilys.formation.java.computerdatabase.model.Computer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#
+	 * createComputer(com.excilys.formation.java.computerdatabase.model.Computer)
 	 */
 	@Override
 	public void createComputer(Computer c) {
@@ -38,12 +42,10 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		try {
 			conn = DBConnection.INSTANCE.getConnection();
-			stat = conn.prepareStatement("INSERT INTO Computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)");
+			stat = conn.prepareStatement(
+					"INSERT INTO Computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)");
 			setStatementsSQL(c, stat);
 			rs = stat.executeQuery();
-			while(rs.next()) {
-				ComputerMapper.createComputer(rs);
-			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,8 +58,90 @@ public enum ComputerDAO implements IComputerDAO {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#updateComputer(com.excilys.formation.java.computerdatabase.model.Computer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#
+	 * deleteComputer(com.excilys.formation.java.computerdatabase.model.Computer)
+	 */
+	@Override
+	public void deleteComputer(Computer c) {
+		Connection conn = null;
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBConnection.INSTANCE.getConnection();
+			stat = conn.prepareStatement("DELETE FROM computer WHERE id = ?");
+			stat.setLong(1, c.getId());
+			rs = stat.executeQuery();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#
+	 * getListComputers()
+	 */
+	@Override
+	public List<Computer> getListComputers() {
+		Connection conn = null;
+		Statement stat = null;
+		ResultSet rs = null;
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#
+	 * showDetails(com.excilys.formation.java.computerdatabase.model.Computer)
+	 */
+	@Override
+	public Computer showDetails(Computer c) {
+		Connection conn = null;
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBConnection.INSTANCE.getConnection();
+			stat = conn.prepareStatement("SELECT name, introduced, discontinued, company_id FROM computer WHERE id = ?");
+			stat.setLong(1, c.getId());
+			rs = stat.executeQuery();
+			c = ComputerMapper.INSTANCE.fillFieldsForComputer(rs, c);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return c;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#
+	 * updateComputer(com.excilys.formation.java.computerdatabase.model.Computer)
 	 */
 	@Override
 	public void updateComputer(Computer c) {
@@ -66,13 +150,11 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		try {
 			conn = DBConnection.INSTANCE.getConnection();
-			stat = conn.prepareStatement("UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
+			stat = conn.prepareStatement(
+					"UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
 			setStatementsSQL(c, stat);
 			stat.setLong(5, c.getId());
 			rs = stat.executeQuery();
-			while(rs.next()) {
-				ComputerMapper.createComputer(rs);
-			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,7 +167,9 @@ public enum ComputerDAO implements IComputerDAO {
 		}
 
 	}
-//Ici on oblige la vérification nulle pour éviter d'avoir un crash peu parlant si on rentre des valeurs nulles (même si on fait la vérif avec un form avant)
+
+	// Ici on oblige la vérification nulle pour éviter d'avoir un crash peu parlant
+	// si on rentre des valeurs nulles (même si on fait la vérif avec un validator avant)
 	private void setStatementsSQL(Computer c, PreparedStatement stat) throws SQLException {
 		if (c.getName() != null) {
 			stat.setString(1, c.getName());
@@ -107,59 +191,6 @@ public enum ComputerDAO implements IComputerDAO {
 		} else {
 			stat.setNull(4, java.sql.Types.BIGINT);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#deleteComputer(com.excilys.formation.java.computerdatabase.model.Computer)
-	 */
-	@Override
-	public void deleteComputer(Computer c) {
-		Connection conn = null;
-		PreparedStatement stat = null;
-		ResultSet rs = null;
-		try {
-			conn = DBConnection.INSTANCE.getConnection();
-			stat = conn.prepareStatement("DELETE FROM computer WHERE id = ?");
-			stat.setLong(1, c.getId());
-			rs = stat.executeQuery();
-			while(rs.next()) {
-				ComputerMapper.createComputer(rs);
-			}
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	/* (non-Javadoc)
-	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#showDetails(com.excilys.formation.java.computerdatabase.model.Computer)
-	 */
-	@Override
-	public void showDetails(Computer c) {
-		Connection conn = null;
-		Statement stat = null;
-		ResultSet rs = null;
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.IComputerDAO#getListComputers()
-	 */
-	@Override
-	public List<Computer> getListComputers() {
-		Connection conn = null;
-		Statement stat = null;
-		ResultSet rs = null;
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
