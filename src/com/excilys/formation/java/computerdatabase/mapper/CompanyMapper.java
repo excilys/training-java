@@ -12,14 +12,14 @@ import com.excilys.formation.java.computerdatabase.model.Company;
  * @author excilys
  *
  */
-public class CompanyMapper {
+public enum CompanyMapper {
+	
+	INSTANCE;
 
 	/**
 	 * 
 	 */
-	public CompanyMapper() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	public static Company createCompany(ResultSet rs) throws SQLException {
 		Long id = rs.getLong("id");

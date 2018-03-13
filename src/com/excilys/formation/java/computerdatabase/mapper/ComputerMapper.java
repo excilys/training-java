@@ -12,14 +12,14 @@ import com.excilys.formation.java.computerdatabase.model.Computer;
  * @author excilys
  *
  */
-public class ComputerMapper {
+public enum ComputerMapper {
+	
+	INSTANCE;
 
 	/**
 	 * 
 	 */
-	public ComputerMapper() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	public static Computer createComputer(ResultSet rs) throws SQLException {
 		Computer c = new Computer();
