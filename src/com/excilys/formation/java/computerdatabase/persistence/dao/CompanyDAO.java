@@ -27,6 +27,8 @@ public enum CompanyDAO implements ICompanyDAO {
 	/**
 	 * 
 	 */
+	private DBConnection dbConnection = DBConnection.INSTANCE;
+	private CompanyMapper compMapper = CompanyMapper.INSTANCE;
 
 	/*
 	 * (non-Javadoc)
@@ -37,16 +39,14 @@ public enum CompanyDAO implements ICompanyDAO {
 	@Override
 	public List<Company> getListCompanies() {
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
-		Connection conn = null;
 		PreparedStatement stat = null;
 		ResultSet rs = null;
-		try {
-			conn = DBConnection.INSTANCE.getConnection();
+		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement("SELECT * FROM company");
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
-				listCompanies.add(CompanyMapper.INSTANCE.createCompany(rs));
+				listCompanies.add(compMapper.createCompany(rs));
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -58,13 +58,12 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			try {
-				DBConnection.closeConnection(rs, stat, conn);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} 
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return listCompanies;
 	}

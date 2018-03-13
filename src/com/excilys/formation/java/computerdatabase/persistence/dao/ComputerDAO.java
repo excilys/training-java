@@ -33,7 +33,7 @@ public enum ComputerDAO implements IComputerDAO {
 
 	private DBConnection dbConnection = DBConnection.INSTANCE;
 	private ComputerMapper compMapper = ComputerMapper.INSTANCE;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -43,15 +43,11 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public void createComputer(Computer c) {
-		Connection conn = null;
 		PreparedStatement stat = null;
-		ResultSet rs = null;
-		try {
-			conn = dbConnection.getConnection();
+		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
 					"INSERT INTO Computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)");
 			setStatementsSQL(c, stat);
-			rs = stat.executeQuery();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,14 +69,10 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public void deleteComputer(Computer c) {
-		Connection conn = null;
 		PreparedStatement stat = null;
-		ResultSet rs = null;
-		try {
-			conn = dbConnection.getConnection();
+		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement("DELETE FROM computer WHERE id = ?");
 			stat.setLong(1, c.getId());
-			rs = stat.executeQuery();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,12 +95,10 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public List<Computer> getListComputers() {
-		Connection conn = null;
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
-		try {
-			conn = dbConnection.getConnection();
+		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement("SELECT * FROM company");
 			rs = stat.executeQuery();
 
@@ -125,13 +115,12 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			try {
-				DBConnection.closeConnection(rs, stat, conn);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} 
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return listComputers;
 	}
@@ -145,11 +134,9 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public Computer showDetails(Computer c) {
-		Connection conn = null;
 		PreparedStatement stat = null;
 		ResultSet rs = null;
-		try {
-			conn = dbConnection.getConnection();
+		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn
 					.prepareStatement("SELECT name, introduced, discontinued, company_id FROM computer WHERE id = ?");
 			stat.setLong(1, c.getId());
@@ -162,6 +149,12 @@ public enum ComputerDAO implements IComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rs.close();
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -178,16 +171,12 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public void updateComputer(Computer c) {
-		Connection conn = null;
 		PreparedStatement stat = null;
-		ResultSet rs = null;
-		try {
-			conn = dbConnection.getConnection();
+		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
 					"UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
 			setStatementsSQL(c, stat);
 			stat.setLong(5, c.getId());
-			rs = stat.executeQuery();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

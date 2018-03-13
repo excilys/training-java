@@ -53,15 +53,4 @@ public enum DBConnection {
 		return conn;
 	}
 
-	public static void closeConnection(ResultSet rs, Statement stat, Connection conn) throws SQLException {
-		if (rs != null) {
-			rs.close();
-		}
-		if (stat != null) {
-			stat.close();
-		}
-		if (conn != null) {
-			conn.close();
-		}
-	}
 }
