@@ -19,17 +19,17 @@ import com.excilys.formation.java.computerdatabase.persistence.DBConnection;
  * @author excilys
  *
  */
-public class CompanyDAO implements ICompanyDAO {
+public enum CompanyDAO implements ICompanyDAO {
+	
+	INSTANCE;
 
 	/**
 	 * 
 	 */
 	
-	private static final String SQL_LIST_COMPANIES = "SELECT * FROM Company";
+	private static final String SQL_LIST_COMPANIES = "SELECT * FROM company";
 	
-	public CompanyDAO() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.excilys.formation.java.computerdatabase.persistence.dao.ICompanyDAO#listCompanies()
