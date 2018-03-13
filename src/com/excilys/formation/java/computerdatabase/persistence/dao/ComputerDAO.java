@@ -40,10 +40,11 @@ public class ComputerDAO implements IComputerDAO {
 		try {
 			conn = DBConnection.INSTANCE.getConnection();
 			stat = conn.prepareStatement("INSERT INTO Computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)");
+			// Ici on oblige la vérification nulle pour éviter d'avoir un crash peu parlant si on rentre des valeurs nulles (même si on fait la vérif avec un form avant)
 			if (c.getName() != null) {
 				stat.setString(1, c.getName());
 			} else {
-				stat.setNull(1 , java.sql.Types.VARCHAR);
+				stat.setNull(1, java.sql.Types.VARCHAR);
 			}
 			if (c.getIntroduced() != null) {
 				stat.setDate(2, Date.valueOf(c.getIntroduced()));
@@ -53,12 +54,12 @@ public class ComputerDAO implements IComputerDAO {
 			if (c.getDiscontinued() != null) {
 				stat.setDate(3, Date.valueOf(c.getDiscontinued()));
 			} else {
-				stat.setNull(3,  java.sql.Types.DATE);
+				stat.setNull(3, java.sql.Types.DATE);
 			}
 			if (c.getCompany_id() != null) {
 				stat.setLong(4, c.getCompany_id());
 			} else {
-				stat.setNull(4,  java.sql.Types.BIGINT);
+				stat.setNull(4, java.sql.Types.BIGINT);
 			}
 			rs = stat.executeQuery();
 			while(rs.next()) {
