@@ -31,6 +31,9 @@ public enum ComputerDAO implements IComputerDAO {
 	 * 
 	 */
 
+	private DBConnection dbConnection = DBConnection.INSTANCE;
+	private ComputerMapper compMapper = ComputerMapper.INSTANCE;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -44,7 +47,7 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			conn = DBConnection.INSTANCE.getConnection();
+			conn = dbConnection.getConnection();
 			stat = conn.prepareStatement(
 					"INSERT INTO Computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)");
 			setStatementsSQL(c, stat);
@@ -74,7 +77,7 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			conn = DBConnection.INSTANCE.getConnection();
+			conn = dbConnection.getConnection();
 			stat = conn.prepareStatement("DELETE FROM computer WHERE id = ?");
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
@@ -105,12 +108,12 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
 		try {
-			conn = DBConnection.INSTANCE.getConnection();
+			conn = dbConnection.getConnection();
 			stat = conn.prepareStatement("SELECT * FROM company");
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
-				listComputers.add(ComputerMapper.INSTANCE.createComputer(rs));
+				listComputers.add(compMapper.createComputer(rs));
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -146,12 +149,12 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			conn = DBConnection.INSTANCE.getConnection();
+			conn = dbConnection.getConnection();
 			stat = conn
 					.prepareStatement("SELECT name, introduced, discontinued, company_id FROM computer WHERE id = ?");
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
-			c = ComputerMapper.INSTANCE.fillFieldsForComputer(rs, c);
+			c = compMapper.fillFieldsForComputer(rs, c);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,7 +182,7 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			conn = DBConnection.INSTANCE.getConnection();
+			conn = dbConnection.getConnection();
 			stat = conn.prepareStatement(
 					"UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
 			setStatementsSQL(c, stat);

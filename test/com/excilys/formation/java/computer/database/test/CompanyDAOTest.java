@@ -19,10 +19,11 @@ import com.excilys.formation.java.computerdatabase.persistence.dao.CompanyDAO;
  *
  */
 public class CompanyDAOTest {
+	
+	private CompanyDAO newDAO = CompanyDAO.INSTANCE;
 
 	@Test
 	public void testGetListCompanies() {
-		CompanyDAO newDAO = new CompanyDAO();
 		List<Company> listCompanies = new ArrayList<>();
 		listCompanies = newDAO.getListCompanies();
 		assertNotNull(listCompanies);
