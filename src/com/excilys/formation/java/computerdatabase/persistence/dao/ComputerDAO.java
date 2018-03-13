@@ -10,9 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.formation.java.computerdatabase.mapper.CompanyMapper;
 import com.excilys.formation.java.computerdatabase.mapper.ComputerMapper;
+import com.excilys.formation.java.computerdatabase.model.Company;
 import com.excilys.formation.java.computerdatabase.model.Computer;
 import com.excilys.formation.java.computerdatabase.persistence.DBConnection;
 
@@ -98,10 +101,36 @@ public enum ComputerDAO implements IComputerDAO {
 	@Override
 	public List<Computer> getListComputers() {
 		Connection conn = null;
-		Statement stat = null;
+		PreparedStatement stat = null;
 		ResultSet rs = null;
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Computer> listComputers = new ArrayList<Computer>();
+		try {
+			conn = DBConnection.INSTANCE.getConnection();
+			stat = conn.prepareStatement("SELECT * FROM company");
+			rs = stat.executeQuery();
+
+			while (rs.next()) {
+				listComputers.add(ComputerMapper.INSTANCE.createComputer(rs));
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				DBConnection.closeConnection(rs, stat, conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return listComputers;
 	}
 
 	/*
@@ -118,7 +147,8 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		try {
 			conn = DBConnection.INSTANCE.getConnection();
-			stat = conn.prepareStatement("SELECT name, introduced, discontinued, company_id FROM computer WHERE id = ?");
+			stat = conn
+					.prepareStatement("SELECT name, introduced, discontinued, company_id FROM computer WHERE id = ?");
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
 			c = ComputerMapper.INSTANCE.fillFieldsForComputer(rs, c);
@@ -169,7 +199,8 @@ public enum ComputerDAO implements IComputerDAO {
 	}
 
 	// Ici on oblige la vérification nulle pour éviter d'avoir un crash peu parlant
-	// si on rentre des valeurs nulles (même si on fait la vérif avec un validator avant)
+	// si on rentre des valeurs nulles (même si on fait la vérif avec un validator
+	// avant)
 	private void setStatementsSQL(Computer c, PreparedStatement stat) throws SQLException {
 		if (c.getName() != null) {
 			stat.setString(1, c.getName());

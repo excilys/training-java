@@ -46,7 +46,7 @@ public enum CompanyDAO implements ICompanyDAO {
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
-				listCompanies.add(CompanyMapper.createCompany(rs));
+				listCompanies.add(CompanyMapper.INSTANCE.createCompany(rs));
 			}
 
 		} catch (ClassNotFoundException e) {
