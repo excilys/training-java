@@ -21,6 +21,6 @@ public interface IComputerDAO {
 
 	public abstract Computer showDetails(Computer c);
 
-	public abstract List<Computer> getListComputers();
+	public abstract List<Computer> getListComputers(int pageNumber, int eltNumber);
 
 }

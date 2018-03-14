@@ -9,13 +9,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.formation.java.computerdatabase.mapper.CompanyMapper;
 import com.excilys.formation.java.computerdatabase.mapper.ComputerMapper;
-import com.excilys.formation.java.computerdatabase.model.Company;
 import com.excilys.formation.java.computerdatabase.model.Computer;
 import com.excilys.formation.java.computerdatabase.persistence.DBConnection;
 
@@ -33,7 +30,6 @@ public enum ComputerDAO implements IComputerDAO {
 
 	private DBConnection dbConnection = DBConnection.INSTANCE;
 	private ComputerMapper computerMapper = ComputerMapper.INSTANCE;
-	private CompanyMapper companyMapper = CompanyMapper.INSTANCE;
 
 	/*
 	 * (non-Javadoc)
@@ -95,13 +91,16 @@ public enum ComputerDAO implements IComputerDAO {
 	 * getListComputers()
 	 */
 	@Override
-	public List<Computer> getListComputers() {
+	public List<Computer> getListComputers(int pageNumber, int eltNumber) {
+		int offset = pageNumber * eltNumber;
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
 		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
-					"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company on cu_id = ca_id ");
+					"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company on cu_id = ca_id ORDER BY cu_id LIMIT ? OFFSET ?");
+			stat.setInt(1, eltNumber);
+			stat.setInt(2, offset);
 			rs = stat.executeQuery();
 
 			while (rs.next()) {

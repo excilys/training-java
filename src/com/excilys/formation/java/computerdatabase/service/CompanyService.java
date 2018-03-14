@@ -3,7 +3,6 @@
  */
 package com.excilys.formation.java.computerdatabase.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.formation.java.computerdatabase.model.Company;

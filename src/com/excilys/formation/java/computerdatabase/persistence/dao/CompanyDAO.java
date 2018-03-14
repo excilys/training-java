@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public enum CompanyDAO implements ICompanyDAO {
 	 * 
 	 */
 	private DBConnection dbConnection = DBConnection.INSTANCE;
-	private CompanyMapper compMapper = CompanyMapper.INSTANCE;
+	private CompanyMapper companyMapper = CompanyMapper.INSTANCE;
 
 	/*
 	 * (non-Javadoc)
@@ -37,16 +36,19 @@ public enum CompanyDAO implements ICompanyDAO {
 	 * listCompanies()
 	 */
 	@Override
-	public List<Company> getListCompanies() {
+	public List<Company> getListCompanies(int pageNumber, int eltNumber) {
+		int offset = pageNumber * eltNumber;
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("SELECT * FROM company");
+			stat = conn.prepareStatement("SELECT * FROM company ORDER BY ca_id LIMIT ? OFFSET ?");
+			stat.setInt(1, eltNumber);
+			stat.setInt(2, offset);
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
-				listCompanies.add(compMapper.createCompany(rs));
+				listCompanies.add(companyMapper.createCompany(rs));
 			}
 
 		} catch (ClassNotFoundException e) {
