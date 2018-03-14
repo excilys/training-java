@@ -12,9 +12,7 @@ import com.excilys.formation.java.computerdatabase.model.Company;
  *
  */
 public interface ICompanyDAO {
-	
+
 	public abstract List<Company> getListCompanies();
-	
-	
-	
+
 }

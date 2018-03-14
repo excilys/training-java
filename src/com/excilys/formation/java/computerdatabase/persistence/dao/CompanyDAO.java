@@ -58,7 +58,7 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		try {
 			rs.close();
 		} catch (SQLException e) {

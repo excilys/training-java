@@ -15,7 +15,7 @@ import com.excilys.formation.java.computerdatabase.model.Computer;
 public enum ComputerMapper {
 
 	INSTANCE;
-	
+
 	private CompanyMapper companyMapper = CompanyMapper.INSTANCE;
 
 	/**

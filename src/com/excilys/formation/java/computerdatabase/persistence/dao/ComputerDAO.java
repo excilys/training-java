@@ -100,7 +100,8 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
 		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("SELECT * FROM computer");
+			stat = conn.prepareStatement(
+					"SELECT c1.id, c1.name, c1.introduced, c1.discontinued, c1.company_id, c2.id as company_id, c2.name as company_name FROM computer as c1 LEFT JOIN company as c2 on c1.id = c2.id ");
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
@@ -116,7 +117,7 @@ public enum ComputerDAO implements IComputerDAO {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		try {
 			rs.close();
 		} catch (SQLException e) {
@@ -138,8 +139,8 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn
-					.prepareStatement("SELECT name, introduced, discontinued, company FROM computer WHERE id = ?");
+			stat = conn.prepareStatement(
+					"SELECT c1.name, c1.introduced, c1.discontinued, c1.company, c2.id as company_id, c2.name as company_name FROM computer as c1 LEFT JOIN company as c2 ON c1.id = c2.id WHERE id = ?");
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
 			c = computerMapper.fillFieldsForComputer(rs, c);
