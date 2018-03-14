@@ -32,7 +32,8 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 
 	private DBConnection dbConnection = DBConnection.INSTANCE;
-	private ComputerMapper compMapper = ComputerMapper.INSTANCE;
+	private ComputerMapper computerMapper = ComputerMapper.INSTANCE;
+	private CompanyMapper companyMapper = CompanyMapper.INSTANCE;
 
 	/*
 	 * (non-Javadoc)
@@ -46,7 +47,7 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
-					"INSERT INTO Computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)");
+					"INSERT INTO Computer (name, introduced, discontinued, company) VALUES (?, ?, ?, ?)");
 			setStatementsSQL(c, stat);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -99,11 +100,11 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
 		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("SELECT * FROM company");
+			stat = conn.prepareStatement("SELECT * FROM computer");
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
-				listComputers.add(compMapper.createComputer(rs));
+				listComputers.add(computerMapper.createComputer(rs));
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -138,10 +139,10 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn
-					.prepareStatement("SELECT name, introduced, discontinued, company_id FROM computer WHERE id = ?");
+					.prepareStatement("SELECT name, introduced, discontinued, company FROM computer WHERE id = ?");
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
-			c = compMapper.fillFieldsForComputer(rs, c);
+			c = computerMapper.fillFieldsForComputer(rs, c);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,8 +210,8 @@ public enum ComputerDAO implements IComputerDAO {
 		} else {
 			stat.setNull(3, java.sql.Types.DATE);
 		}
-		if (c.getCompany_id() != null) {
-			stat.setLong(4, c.getCompany_id());
+		if (c.getCompany() != null) {
+			stat.setLong(4, c.getCompany().getId());
 		} else {
 			stat.setNull(4, java.sql.Types.BIGINT);
 		}

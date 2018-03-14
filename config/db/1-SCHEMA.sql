@@ -13,7 +13,7 @@ drop schema if exists `computer-database-db`;
 
   create table computer (
     id                        bigint not null auto_increment,
-    name                      varchar(255),
+    name                      varchar(255) NOT NULL,
     introduced                datetime NULL,
     discontinued              datetime NULL,
     company_id                bigint default NULL,

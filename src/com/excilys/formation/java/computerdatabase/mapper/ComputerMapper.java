@@ -15,6 +15,8 @@ import com.excilys.formation.java.computerdatabase.model.Computer;
 public enum ComputerMapper {
 
 	INSTANCE;
+	
+	private CompanyMapper companyMapper = CompanyMapper.INSTANCE;
 
 	/**
 	 * @throws SQLException
@@ -31,7 +33,7 @@ public enum ComputerMapper {
 		c.setName(rs.getString(0));
 		c.setIntroduced(rs.getDate(1).toLocalDate());
 		c.setDiscontinued(rs.getDate(2).toLocalDate());
-		c.setCompany_id(rs.getLong(3));
+		c.setCompany(companyMapper.createCompany(rs));
 		return c;
 	}
 

@@ -19,19 +19,19 @@ public class Computer {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private Long company_id;
+	private Company company;
 
 	public Computer() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Computer(Long id, String name, LocalDate introduced, LocalDate discontinued, Long company_id) {
+	public Computer(Long id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company_id = company_id;
+		this.company = company;
 	}
 
 	/**
@@ -97,16 +97,16 @@ public class Computer {
 	/**
 	 * @return the company_id
 	 */
-	public Long getCompany_id() {
-		return company_id;
+	public Company getCompany() {
+		return company;
 	}
 
 	/**
 	 * @param company_id
 	 *            the company_id to set
 	 */
-	public void setCompany_id(Long company_id) {
-		this.company_id = company_id;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 }
