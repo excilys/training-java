@@ -109,4 +109,13 @@ public class Computer {
 		this.company = company;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return new StringBuilder().append("Computer : ").append(id).append(" name: ").append(name).append(" introduced in: ").append(introduced).append(" discontinued in: ").append(discontinued).append(" from the company: ").append(company.getName()).toString();
+	}
+
+	
 }

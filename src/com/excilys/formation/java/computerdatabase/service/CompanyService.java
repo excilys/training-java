@@ -18,10 +18,12 @@ public enum CompanyService {
 
 	private CompanyDAO companyDAO = CompanyDAO.INSTANCE;
 
-	public List<Company> getListCompanies() {
-		
-		return companyDAO.getListCompanies();
+	public List<Company> getListCompanies(int pageNumber, int eltNumber) {
+		return companyDAO.getListCompanies(pageNumber, eltNumber);
+	}
 
+	public int getPageCountCompanies(int eltNumber) {
+		return companyDAO.getPageCountCompanies(eltNumber);
 	}
 
 }

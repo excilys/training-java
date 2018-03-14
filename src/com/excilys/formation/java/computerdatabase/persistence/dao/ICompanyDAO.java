@@ -15,4 +15,6 @@ public interface ICompanyDAO {
 
 	public abstract List<Company> getListCompanies(int pageNumber, int eltNumber);
 
+	public abstract int getPageCountCompanies(int eltNumber);
+
 }

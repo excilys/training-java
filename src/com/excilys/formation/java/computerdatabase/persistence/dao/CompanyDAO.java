@@ -70,4 +70,28 @@ public enum CompanyDAO implements ICompanyDAO {
 		return listCompanies;
 	}
 
+	@Override
+	public int getPageCountCompanies(int eltNumber) {
+		int pageNumber = 0;
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		try (Connection conn = dbConnection.getConnection()) {
+			stat = conn.prepareStatement("SELECT count(*) FROM company");
+			rs = stat.executeQuery();
+			rs.next();
+			int tailleListCompanies = rs.getInt(1);
+			pageNumber = tailleListCompanies / eltNumber;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pageNumber;
+	}
+
 }

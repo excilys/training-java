@@ -190,6 +190,30 @@ public enum ComputerDAO implements IComputerDAO {
 		}
 
 	}
+	
+	@Override
+	public int getPageCountComputers(int eltNumber) {
+		int pageNumber = 0;
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		try (Connection conn = dbConnection.getConnection()) {
+			stat = conn.prepareStatement("SELECT count(*) FROM computer");
+			rs = stat.executeQuery();
+			rs.next();
+			int tailleListComputers = rs.getInt(1);
+			pageNumber = tailleListComputers / eltNumber;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pageNumber;
+	}
 
 	// Ici on oblige la vérification nulle pour éviter d'avoir un crash peu parlant
 	// si on rentre des valeurs nulles (même si on fait la vérif avec un validator
