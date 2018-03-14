@@ -25,9 +25,8 @@ public class Computer {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Computer(Long id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
+	public Computer(String name, LocalDate introduced, LocalDate discontinued, Company company) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;

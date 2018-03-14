@@ -40,11 +40,11 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public void createComputer(Computer c) {
-		PreparedStatement stat = null;
-		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement(
-					"INSERT INTO Computer (cu_name, cu_introduced, cu_discontinued, cu_company) VALUES (?, ?, ?, ?)");
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn.prepareStatement(
+						"INSERT INTO Computer (cu_name, cu_introduced, cu_discontinued, cu_ca_id) VALUES (?, ?, ?, ?)");) {
 			setStatementsSQL(c, stat);
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,9 +66,9 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public void deleteComputer(Computer c) {
-		PreparedStatement stat = null;
-		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("DELETE FROM computer WHERE cu_id = ?");
+
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn.prepareStatement("DELETE FROM computer WHERE cu_id = ?");) {
 			stat.setLong(1, c.getId());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -93,12 +93,11 @@ public enum ComputerDAO implements IComputerDAO {
 	@Override
 	public List<Computer> getListComputers(int pageNumber, int eltNumber) {
 		int offset = pageNumber * eltNumber;
-		PreparedStatement stat = null;
 		ResultSet rs = null;
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
-		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement(
-					"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company on cu_id = ca_id ORDER BY cu_id LIMIT ? OFFSET ?");
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn.prepareStatement(
+						"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company on cu_id = ca_id ORDER BY cu_id LIMIT ? OFFSET ?");) {
 			stat.setInt(1, eltNumber);
 			stat.setInt(2, offset);
 			rs = stat.executeQuery();
@@ -117,12 +116,7 @@ public enum ComputerDAO implements IComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		closeConnection(rs);
 		return listComputers;
 	}
 
@@ -135,11 +129,10 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public Computer showDetails(Computer c) {
-		PreparedStatement stat = null;
 		ResultSet rs = null;
-		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement(
-					"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company ON cu.id = ca.id WHERE cu_id = ?");
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn.prepareStatement(
+						"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company ON cu.id = ca.id WHERE cu_id = ?");) {
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
 			c = computerMapper.fillFieldsForComputer(rs, c);
@@ -153,12 +146,7 @@ public enum ComputerDAO implements IComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		closeConnection(rs);
 		return c;
 
 	}
@@ -190,14 +178,14 @@ public enum ComputerDAO implements IComputerDAO {
 		}
 
 	}
-	
+
 	@Override
 	public int getPageCountComputers(int eltNumber) {
 		int pageNumber = 0;
-		PreparedStatement stat = null;
 		ResultSet rs = null;
-		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("SELECT count(*) FROM computer");
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn.prepareStatement("SELECT count(*) FROM computer");)
+		{
 			rs = stat.executeQuery();
 			rs.next();
 			int tailleListComputers = rs.getInt(1);
@@ -212,18 +200,24 @@ public enum ComputerDAO implements IComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		closeConnection(rs);
 		return pageNumber;
+	}
+
+	private void closeConnection(ResultSet rs) {
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// Ici on oblige la vérification nulle pour éviter d'avoir un crash peu parlant
 	// si on rentre des valeurs nulles (même si on fait la vérif avec un validator
 	// avant)
 	private void setStatementsSQL(Computer c, PreparedStatement stat) throws SQLException {
-		if (c.getName() != null) {
-			stat.setString(1, c.getName());
-		} else {
-			stat.setNull(1, java.sql.Types.VARCHAR);
-		}
+		stat.setString(1, c.getName());
 		if (c.getIntroduced() != null) {
 			stat.setDate(2, Date.valueOf(c.getIntroduced()));
 		} else {

@@ -33,19 +33,15 @@ public enum DBConnection {
 	private static final String PROPERTY_PASSWORD = "password";
 
 	public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
-		String url;
-		String driver;
-		String utilisateur;
-		String password;
 		/* Chargement du driver JDBC pour MySQL */
 		Properties properties = new Properties();
 		InputStream fichierProperties = new FileInputStream(PROPERTIES_FILE);
 
 		properties.load(fichierProperties);
-		url = properties.getProperty(PROPERTY_URL);
-		driver = properties.getProperty(PROPERTY_DRIVER);
-		utilisateur = properties.getProperty(PROPERTY_NOM_UTILISATEUR);
-		password = properties.getProperty(PROPERTY_PASSWORD);
+		String url = properties.getProperty(PROPERTY_URL);
+		String driver = properties.getProperty(PROPERTY_DRIVER);
+		String utilisateur = properties.getProperty(PROPERTY_NOM_UTILISATEUR);
+		String password = properties.getProperty(PROPERTY_PASSWORD);
 
 		Class.forName(driver);
 		conn = DriverManager.getConnection(url, utilisateur, password);
