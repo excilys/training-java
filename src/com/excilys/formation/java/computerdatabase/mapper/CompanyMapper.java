@@ -22,8 +22,8 @@ public enum CompanyMapper {
 
 	public Company createCompany(ResultSet rs) throws SQLException {
 		Company c = new Company();
-		c.setId(rs.getLong("company_id"));
-		c.setName(rs.getString("company_name"));
+		c.setId(rs.getLong("ca_id"));
+		c.setName(rs.getString("ca_name"));
 		return c;
 	}
 

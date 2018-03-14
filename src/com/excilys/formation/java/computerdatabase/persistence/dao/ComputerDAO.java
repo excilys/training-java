@@ -47,7 +47,7 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
-					"INSERT INTO Computer (name, introduced, discontinued, company) VALUES (?, ?, ?, ?)");
+					"INSERT INTO Computer (cu_name, cu_introduced, cu_discontinued, cu_company) VALUES (?, ?, ?, ?)");
 			setStatementsSQL(c, stat);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -72,7 +72,7 @@ public enum ComputerDAO implements IComputerDAO {
 	public void deleteComputer(Computer c) {
 		PreparedStatement stat = null;
 		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("DELETE FROM computer WHERE id = ?");
+			stat = conn.prepareStatement("DELETE FROM computer WHERE cu_id = ?");
 			stat.setLong(1, c.getId());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -101,7 +101,7 @@ public enum ComputerDAO implements IComputerDAO {
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
 		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
-					"SELECT c1.id, c1.name, c1.introduced, c1.discontinued, c1.company_id, c2.id as company_id, c2.name as company_name FROM computer as c1 LEFT JOIN company as c2 on c1.id = c2.id ");
+					"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company on cu_id = ca_id ");
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
@@ -140,7 +140,7 @@ public enum ComputerDAO implements IComputerDAO {
 		ResultSet rs = null;
 		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
-					"SELECT c1.name, c1.introduced, c1.discontinued, c1.company, c2.id as company_id, c2.name as company_name FROM computer as c1 LEFT JOIN company as c2 ON c1.id = c2.id WHERE id = ?");
+					"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company ON cu.id = ca.id WHERE cu_id = ?");
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
 			c = computerMapper.fillFieldsForComputer(rs, c);
@@ -176,7 +176,7 @@ public enum ComputerDAO implements IComputerDAO {
 		PreparedStatement stat = null;
 		try (Connection conn = dbConnection.getConnection()) {
 			stat = conn.prepareStatement(
-					"UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
+					"UPDATE computer SET cu_name = ?, cu_introduced = ?, cu_discontinued = ?, cu_ca_id = ? WHERE cuid = ?");
 			setStatementsSQL(c, stat);
 			stat.setLong(5, c.getId());
 		} catch (ClassNotFoundException e) {

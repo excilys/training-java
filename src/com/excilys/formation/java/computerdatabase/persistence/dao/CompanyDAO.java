@@ -42,7 +42,7 @@ public enum CompanyDAO implements ICompanyDAO {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("SELECT id as company_id, name as company_name FROM company");
+			stat = conn.prepareStatement("SELECT * FROM company");
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
