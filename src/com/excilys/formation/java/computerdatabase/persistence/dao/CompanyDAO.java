@@ -39,10 +39,10 @@ public enum CompanyDAO implements ICompanyDAO {
 	public List<Company> getListCompanies(int pageNumber, int eltNumber) {
 		int offset = pageNumber * eltNumber;
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
-		PreparedStatement stat = null;
 		ResultSet rs = null;
-		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("SELECT * FROM company ORDER BY ca_id LIMIT ? OFFSET ?");
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn
+						.prepareStatement("SELECT * FROM company ORDER BY ca_id LIMIT ? OFFSET ?");) {
 			stat.setInt(1, eltNumber);
 			stat.setInt(2, offset);
 			rs = stat.executeQuery();
@@ -61,22 +61,16 @@ public enum CompanyDAO implements ICompanyDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		closeConnection(rs);
 		return listCompanies;
 	}
 
 	@Override
 	public int getPageCountCompanies(int eltNumber) {
 		int pageNumber = 0;
-		PreparedStatement stat = null;
 		ResultSet rs = null;
-		try (Connection conn = dbConnection.getConnection()) {
-			stat = conn.prepareStatement("SELECT count(*) FROM company");
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn.prepareStatement("SELECT count(*) FROM company");) {
 			rs = stat.executeQuery();
 			rs.next();
 			int tailleListCompanies = rs.getInt(1);
@@ -91,7 +85,43 @@ public enum CompanyDAO implements ICompanyDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		closeConnection(rs);
 		return pageNumber;
+	}
+
+	@Override
+	public Company showDetails(Company c) {
+		ResultSet rs = null;
+		try (Connection conn = dbConnection.getConnection();
+				PreparedStatement stat = conn
+						.prepareStatement("SELECT * FROM company WHERE ca_id = ?");) {
+			rs = stat.executeQuery();
+			stat.setLong(1, c.getId());
+			while (rs.next()) {
+				companyMapper.createCompany(rs);
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection(rs);
+		return c;
+	}
+
+	private void closeConnection(ResultSet rs) {
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
