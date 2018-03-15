@@ -30,9 +30,14 @@ public enum ComputerMapper {
 	}
 
 	public Computer fillFieldsForComputer(ResultSet rs, Computer c) throws SQLException {
-		c.setName(rs.getString(0));
-		c.setIntroduced(rs.getDate(1).toLocalDate());
-		c.setDiscontinued(rs.getDate(2).toLocalDate());
+		c.setId(rs.getLong("cu_id"));
+		c.setName(rs.getString("cu_name"));
+		if (rs.getDate("cu_introduced") != null) {
+			c.setIntroduced(rs.getDate("cu_introduced").toLocalDate());
+		}
+		if (rs.getDate("cu_discontinued") != null) {
+			c.setDiscontinued(rs.getDate("cu_discontinued").toLocalDate());
+		}
 		c.setCompany(companyMapper.createCompany(rs));
 		return c;
 	}
