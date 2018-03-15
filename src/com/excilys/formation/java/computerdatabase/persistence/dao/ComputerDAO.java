@@ -44,7 +44,7 @@ public enum ComputerDAO implements IComputerDAO {
 				PreparedStatement stat = conn.prepareStatement(
 						"INSERT INTO Computer (cu_name, cu_introduced, cu_discontinued, cu_ca_id) VALUES (?, ?, ?, ?)");) {
 			setStatementsSQL(c, stat);
-
+			stat.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,6 +70,7 @@ public enum ComputerDAO implements IComputerDAO {
 		try (Connection conn = dbConnection.getConnection();
 				PreparedStatement stat = conn.prepareStatement("DELETE FROM computer WHERE cu_id = ?");) {
 			stat.setLong(1, c.getId());
+			stat.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,13 +130,15 @@ public enum ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public Computer showDetails(Computer c) {
+		Computer newComputer = new Computer();
 		ResultSet rs = null;
 		try (Connection conn = dbConnection.getConnection();
 				PreparedStatement stat = conn.prepareStatement(
-						"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company ON cu.id = ca.id WHERE cu_id = ?");) {
+						"SELECT cu_id, cu_name, cu_introduced, cu_discontinued, ca_id, ca_name FROM computer LEFT JOIN company ON cu_id = ca_id WHERE cu_id = ?");) {
 			stat.setLong(1, c.getId());
 			rs = stat.executeQuery();
-			c = computerMapper.fillFieldsForComputer(rs, c);
+			rs.next();
+			newComputer = computerMapper.fillFieldsForComputer(rs, c);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,7 +150,7 @@ public enum ComputerDAO implements IComputerDAO {
 			e.printStackTrace();
 		}
 		closeConnection(rs);
-		return c;
+		return newComputer;
 
 	}
 
@@ -166,6 +169,7 @@ public enum ComputerDAO implements IComputerDAO {
 					"UPDATE computer SET cu_name = ?, cu_introduced = ?, cu_discontinued = ?, cu_ca_id = ? WHERE cuid = ?");
 			setStatementsSQL(c, stat);
 			stat.setLong(5, c.getId());
+			stat.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

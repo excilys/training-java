@@ -26,11 +26,11 @@ public enum ComputerMapper {
 	public Computer createComputer(ResultSet rs) throws SQLException {
 		Computer c = new Computer();
 		fillFieldsForComputer(rs, c);
+		c.setId(rs.getLong("cu_id"));
 		return c;
 	}
 
 	public Computer fillFieldsForComputer(ResultSet rs, Computer c) throws SQLException {
-		c.setId(rs.getLong("cu_id"));
 		c.setName(rs.getString("cu_name"));
 		if (rs.getDate("cu_introduced") != null) {
 			c.setIntroduced(rs.getDate("cu_introduced").toLocalDate());

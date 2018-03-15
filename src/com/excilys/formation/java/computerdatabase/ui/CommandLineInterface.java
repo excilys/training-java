@@ -16,8 +16,6 @@ import com.excilys.formation.java.computerdatabase.service.ComputerService;
  *
  */
 
-
-
 public class CommandLineInterface {
 
 	private String res;
@@ -26,7 +24,7 @@ public class CommandLineInterface {
 	private CompanyService companyService = CompanyService.INSTANCE;
 	private int taillePage;
 
-	public CommandLineInterface () {
+	public CommandLineInterface() {
 		br = new BufferedReader(new InputStreamReader(System.in));
 		taillePage = 20;
 	}
@@ -40,6 +38,38 @@ public class CommandLineInterface {
 		return res;
 	}
 
+	/**
+	 * @param cli
+	 * @param s
+	 */
+	public void mainLoop(String s) {
+		switch (s) {
+		case "1":
+			getListComputers();
+
+			break;
+		case "2":
+			getListCompanies();
+
+			break;
+		case "3":
+			showdetails();
+
+			break;
+		case "4":
+			createComputer();
+
+			break;
+		case "5":
+			updateordelComputer();
+
+			break;
+
+		default:
+			throw new ArrayIndexOutOfBoundsException("Votre chiffre ne correspond à rien :D");
+		}
+	}
+
 	private void updateordelComputer() {
 
 	}
@@ -49,36 +79,58 @@ public class CommandLineInterface {
 	}
 
 	private void showdetails() {
+		System.out.println("Donnez l'id du PC que vous souhaitez consulter");
+		String s = getLineInString();
+		if (s != null) {
+			Long id = Long.parseLong(s);
+			Computer computer = computerService.showDetails(id);
+			System.out.println(computer.toString());
+		} else {
+
+		}
 
 	}
 
 	private void getListCompanies() {
 		int nombreResCompanies = companyService.getPageCountCompanies(taillePage);
-		for (int j = 0; j < nombreResCompanies+1; j++) {
+		for (int j = 0; j < nombreResCompanies + 1; j++) {
 			List<Company> listCompanies = companyService.getListCompanies(j, taillePage);
 			listCompanies.forEach(company -> System.out.println(company.toString()));
-			try {
-				br.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+			getLine();
 		}
 	}
 
 	private void getListComputers() {
 		int nombreResComputers = computerService.getPageCountComputers(taillePage);
-		for (int j = 0; j < nombreResComputers+1; j++) {
+		for (int j = 0; j < nombreResComputers + 1; j++) {
 			List<Computer> listComputers = computerService.getListComputers(j, taillePage);
 			listComputers.forEach(computer -> System.out.println(computer.toString()));
-			try {
-				br.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+			getLine();
 		}
 
+	}
+
+	/**
+	 * 
+	 */
+	private void getLine() {
+		try {
+			br.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private String getLineInString() {
+		String s = new String();
+		try {
+			s = br.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
 	}
 
 	/**
@@ -88,32 +140,10 @@ public class CommandLineInterface {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		CommandLineInterface cli = new CommandLineInterface();
-		System.out.println(cli.menuCLI());
-		String s = cli.br.readLine();
-		switch (s) {
-		case "1":
-			cli.getListComputers();
-
-			break;
-		case "2":
-			cli.getListCompanies();
-
-			break;
-		case "3":
-			cli.showdetails();
-
-			break;
-		case "4":
-			cli.createComputer();
-
-			break;
-		case "5":
-			cli.updateordelComputer();
-
-			break;
-
-		default:
-			throw new ArrayIndexOutOfBoundsException("Votre chiffre ne correspond à rien :D");
+		while (true) {
+			System.out.println(cli.menuCLI());
+			String s = cli.getLineInString();
+			cli.mainLoop(s);
 		}
 	}
 
