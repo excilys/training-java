@@ -189,17 +189,7 @@ This SPA must be responsive. You can use any css library or create your own CSS.
 
 Don't forget that this project is not on your tomcat, and that the address of your webservices may change from an environment to another.
 
-#### 4.8.1 [AngularJs](https://angularjs.org/)
-
-You must use a generator from either Yeoman or Npm, but you'll have to justify your choice.
-
-Don't forget to split your logic between controllers and services.
-
-You can test your SPA with karma + jasmine.
-
-If you can, respect the [style guide of John Papa](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md).
-
-#### 4.8.2 [Angular](https://angular.io/)
+#### 4.8.1 [Angular](https://angular.io/)
 
 Angular is the rework of AngularJS framework. It's a brand new framework that is component oriented.
 
@@ -224,7 +214,7 @@ We recommend you to follow the [style guide of John Papa](https://github.com/joh
 - [Angular Docs](https://angular.io/guide/architecture)
 - [Angular Style guide](https://github.com/johnpapa/angular-styleguide/blob/master/a2/README.md)
 
-#### 4.8.3 [React](https://reactjs.org/)
+#### 4.8.2 [React](https://reactjs.org/)
 
 With React you will introduce yourself to functional programming, latest JS features, and highly scalable single page apps.
 
